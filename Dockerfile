@@ -15,8 +15,8 @@ COPY . .
 
 RUN ./gradlew releaseTarGz -x test -x integrationTest --no-build-cache --no-configuration-cache --no-daemon
 
-# CORRECTED LINE: The path to the tarball no longer includes 'core'.
-RUN mkdir /opt/kafka && tar -xzf ./build/distributions/kafka_*.tgz -C /opt/kafka --strip-components 1
+# CORRECTED LINE: Use a for loop to ensure the wildcard (*) is expanded correctly.
+RUN mkdir /opt/kafka && for f in ./build/distributions/kafka_*.tgz; do tar -xzf "$f" -C /opt/kafka --strip-components 1; done
 
 
 # =============================================================================
