@@ -1,8 +1,11 @@
+
 # Define the build arguments that will be passed in from the Jenkins pipeline.
 # Default values are provided as a fallback.
 ARG BUILDER_IMAGE=eclipse-temurin:21-jdk
 ARG JRE_IMAGE=eclipse-temurin:21-jre
 ARG JDK_IMAGE=eclipse-temurin:21-jdk
+
+ARG ARTIFACT_FILENAME
 
 # =============================================================================
 # Stage 1: The Builder
@@ -15,9 +18,7 @@ COPY . .
 
 RUN ./gradlew releaseTarGz -x test -x integrationTest --no-build-cache --no-configuration-cache --no-daemon
 
-# CORRECTED LINE: Use a for loop to ensure the wildcard (*) is expanded correctly.
-RUN mkdir /opt/kafka && for f in ./build/distributions/kafka_*.tgz; do tar -xzf "$f" -C /opt/kafka --strip-components 1; done
-
+RUN mkdir -p /opt/kafka && tar -xzf ./build/distributions/${ARTIFACT_FILENAME} -C /opt/kafka --strip-components 1
 
 # =============================================================================
 # Stage 2: The JRE Runtime Image (for Production)
