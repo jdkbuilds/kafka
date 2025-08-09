@@ -18,7 +18,7 @@ COPY . .
 
 RUN ./gradlew releaseTarGz -x test -x integrationTest --no-build-cache --no-configuration-cache --no-daemon
 
-RUN mkdir -p /opt/kafka && tar -xzf ./build/distributions/${ARTIFACT_FILENAME} -C /opt/kafka --strip-components 1
+RUN mkdir -p /opt/kafka && tar -xzf ./core/build/distributions/${ARTIFACT_FILENAME} -C /opt/kafka --strip-components 1
 
 # =============================================================================
 # Stage 2: The JRE Runtime Image (for Production)
