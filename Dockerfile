@@ -18,6 +18,8 @@ COPY . .
 
 RUN ./gradlew releaseTarGz -x test -x integrationTest --no-build-cache --no-configuration-cache --no-daemon
 
+RUN ls -lR ./core/build/distributions/ && echo "DEBUG: ARTIFACT_FILENAME is |--->${ARTIFACT_FILENAME}<---|"
+
 RUN mkdir -p /opt/kafka && tar -xzf ./core/build/distributions/${ARTIFACT_FILENAME} -C /opt/kafka --strip-components 1
 
 # =============================================================================
